@@ -1,11 +1,11 @@
-from fastapi import FastAPI
+﻿from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from backend.app.routers.mlops import router as mlops_router
+from backend.app.routers import mlops_router
 import uvicorn
 
 app = FastAPI(
-    title="MLOps Drift Detection & Retraining Engine",
-    description="Statistical PSI and KS-test pipeline triggering automated retraining DAGs.",
+    title="MLOps Continuous Retraining & Statistical Drift Control Plane",
+    description="Population Stability Index (PSI) and Kolmogorov-Smirnov model drift monitoring engine.",
     version="1.0.0"
 )
 
@@ -17,10 +17,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(mlops_router)
+app.include_router(mlops_router.router)
 
 @app.get("/health")
-async def health():
+async def health_check():
+    return {"status": "healthy", "service": "mlops-retraining-pipeline"}
+
+@app.get("/api/v1/health")
+async def health_check_v1():
     return {"status": "healthy", "service": "mlops-retraining-pipeline"}
 
 if __name__ == "__main__":
