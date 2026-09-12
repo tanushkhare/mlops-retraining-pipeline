@@ -1,11 +1,9 @@
 ﻿import uuid
-import math
 from datetime import datetime, timezone
 from typing import Dict, Any, List
 
 class MLOpsDriftEngine:
     def evaluate_drift(self, batch_size: int, psi_thresh: float, ks_thresh: float) -> Dict[str, Any]:
-        # Feature-level drift evaluation calculations
         features = [
             {"name": "user_embedding_norm", "psi": 0.28, "ks_stat": 0.14, "ks_p": 0.012},
             {"name": "transaction_velocity_1h", "psi": 0.31, "ks_stat": 0.18, "ks_p": 0.004},
@@ -35,7 +33,6 @@ class MLOpsDriftEngine:
         avg_psi = round(total_psi / len(features), 3)
         overall_drift = (avg_psi >= psi_thresh) or (drift_count >= 2)
         retrain = overall_drift
-
         status = "AUTOMATED_RETRAINING_DISPATCHED" if retrain else "MODEL_HEALTHY_IN_TOLERANCE"
 
         return {
